@@ -136,6 +136,10 @@ Plug 'tpope/vim-vinegar'
 Plug 'vim-scripts/OmniCppComplete', { 'for': 'cpp' }
 Plug 'wavded/vim-stylus', { 'for': 'stylus' }
 
+Plug 'vim-scripts/repmo.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'scrooloose/nerdcommenter'
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -625,3 +629,32 @@ let g:yacc_uses_cpp = 1
 runtime custom/local.vim
 " }}}
 " vim:fdm=marker:foldlevel=0
+
+
+""""""""""""""
+" Added my own config after this
+""""""""""""""
+
+" map a motion and its reverse motion:
+:noremap <expr> h repmo#SelfKey('h', 'l')|sunmap h
+:noremap <expr> l repmo#SelfKey('l', 'h')|sunmap l
+
+" if you like `:noremap j gj', you can keep that:
+":noremap <expr> j repmo#Key('gj', 'gk')|sunmap j
+":noremap <expr> k repmo#Key('gk', 'gj')|sunmap k
+
+" repeat the last [count]motion or the last zap-key:
+:map <expr> ; repmo#LastKey(';')|sunmap ;
+:map <expr> , repmo#LastRevKey(',')|sunmap ,
+
+" add these mappings when repeating with `;' or `,':
+:noremap <expr> f repmo#ZapKey('f')|sunmap f
+:noremap <expr> F repmo#ZapKey('F')|sunmap F
+:noremap <expr> t repmo#ZapKey('t')|sunmap t
+:noremap <expr> T repmo#ZapKey('T')|sunmap T
+""""""""""""""""""""""""""""""
+" nerdcommenter
+""""""""""""""""""""""""""""""
+let g:NERDCreateDefaultMappings = 0
+nmap <C-c> <plug>NERDCommenterToggle
+vmap <C-c> <plug>NERDCommenterToggle gv
