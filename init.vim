@@ -136,17 +136,17 @@ Plug 'tpope/vim-vinegar'
 Plug 'vim-scripts/OmniCppComplete', { 'for': 'cpp' }
 Plug 'wavded/vim-stylus', { 'for': 'stylus' }
 
-Plug 'vim-scripts/repmo.vim'
+Plug 'Houl/repmo-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"else
+"  Plug 'Shougo/deoplete.nvim'
+"  Plug 'roxma/nvim-yarp'
+"  Plug 'roxma/vim-hug-neovim-rpc'
+" endif
 
 "include custom plugin
 runtime custom/plugin.vim
@@ -640,8 +640,8 @@ runtime custom/local.vim
 :noremap <expr> l repmo#SelfKey('l', 'h')|sunmap l
 
 " if you like `:noremap j gj', you can keep that:
-":noremap <expr> j repmo#Key('gj', 'gk')|sunmap j
-":noremap <expr> k repmo#Key('gk', 'gj')|sunmap k
+:noremap <expr> j repmo#Key('gj', 'gk')|sunmap j
+:noremap <expr> k repmo#Key('gk', 'gj')|sunmap k
 
 " repeat the last [count]motion or the last zap-key:
 :map <expr> ; repmo#LastKey(';')|sunmap ;
