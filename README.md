@@ -2,11 +2,18 @@
 
 Version: 5.4.0
 
-My Pika vim configuration
+My vim configuration referenced/modified from https://github.com/leomao/pika-vim
 
 Use [vim-plug][vim-plug] to manage plugins.
 
 This configuration is only tested on my own environments.
+
+#### My note
+
+- [x] shared clipboard among different nvim sessions in a tmux 
+- [x] disable deoplete.nvim for now
+- [x] add repmo & nerdcommenter
+
 
 ## How to Use
 
