@@ -13,6 +13,7 @@ This configuration is only tested on my own environments.
 - [x] shared clipboard among different nvim sessions in a tmux 
 - [x] disable deoplete.nvim for now
 - [x] add repmo & nerdcommenter
+- [x] set whichwrap+=<,>,h,l,[,]
 
 
 ## How to Use
