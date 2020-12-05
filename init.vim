@@ -467,44 +467,44 @@ function! ToggleWrap()
     setlocal wrap
     setlocal display+=lastline
   endif
-  call SetWrapKeyMapping()
+"  call SetWrapKeyMapping()
 endfunction
-
-function! SetWrapKeyMapping()
-  if &wrap
-    nnoremap  <buffer> <silent> k gk
-    nnoremap  <buffer> <silent> j gj
-    nnoremap  <buffer> <silent> 0 g^
-    nnoremap  <buffer> <silent> $ g$
-    nnoremap  <buffer> <silent> <Up>   gk
-    nnoremap  <buffer> <silent> <Down> gj
-    nnoremap  <buffer> <silent> <Home> g<Home>
-    nnoremap  <buffer> <silent> <End>  g<End>
-    inoremap <buffer> <silent> <Up>   <Esc>gka
-    inoremap <buffer> <silent> <Down> <Esc>gja
-    inoremap <buffer> <silent> <Home> <Esc>g<Home>i
-    inoremap <buffer> <silent> <End>  <Esc>g<End>a
-    onoremap <buffer> <silent> j gj
-    onoremap <buffer> <silent> k gk
-  else
-    silent! nunmap <buffer> k
-    silent! nunmap <buffer> j
-    silent! nunmap <buffer> 0
-    silent! nunmap <buffer> $
-    silent! nunmap <buffer> <Up>
-    silent! nunmap <buffer> <Down>
-    silent! nunmap <buffer> <Home>
-    silent! nunmap <buffer> <End>
-    silent! iunmap <buffer> <Up>
-    silent! iunmap <buffer> <Down>
-    silent! iunmap <buffer> <Home>
-    silent! iunmap <buffer> <End>
-    silent! ounmap <buffer> j
-    silent! ounmap <buffer> k
-  endif
-endfunction
-
-au BufRead,BufNewFile * call SetWrapKeyMapping()
+"
+"function! SetWrapKeyMapping()
+"  if &wrap
+"    nnoremap  <buffer> <silent> k gk
+"    nnoremap  <buffer> <silent> j gj
+"    nnoremap  <buffer> <silent> 0 g^
+"    nnoremap  <buffer> <silent> $ g$
+"    nnoremap  <buffer> <silent> <Up>   gk
+"    nnoremap  <buffer> <silent> <Down> gj
+"    nnoremap  <buffer> <silent> <Home> g<Home>
+"    nnoremap  <buffer> <silent> <End>  g<End>
+"    inoremap <buffer> <silent> <Up>   <Esc>gka
+"    inoremap <buffer> <silent> <Down> <Esc>gja
+"    inoremap <buffer> <silent> <Home> <Esc>g<Home>i
+"    inoremap <buffer> <silent> <End>  <Esc>g<End>a
+"    onoremap <buffer> <silent> j gj
+"    onoremap <buffer> <silent> k gk
+"  else
+"    silent! nunmap <buffer> k
+"    silent! nunmap <buffer> j
+"    silent! nunmap <buffer> 0
+"    silent! nunmap <buffer> $
+"    silent! nunmap <buffer> <Up>
+"    silent! nunmap <buffer> <Down>
+"    silent! nunmap <buffer> <Home>
+"    silent! nunmap <buffer> <End>
+"    silent! iunmap <buffer> <Up>
+"    silent! iunmap <buffer> <Down>
+"    silent! iunmap <buffer> <Home>
+"    silent! iunmap <buffer> <End>
+"    silent! ounmap <buffer> j
+"    silent! ounmap <buffer> k
+"  endif
+"endfunction
+"
+"au BufRead,BufNewFile * call SetWrapKeyMapping()
 noremap <silent><F3> :call ToggleWrap()<CR>
 
 inoremap <C-l> <Del>
