@@ -659,3 +659,9 @@ runtime custom/local.vim
 let g:NERDCreateDefaultMappings = 0
 nmap <C-c> <plug>NERDCommenterToggle
 vmap <C-c> <plug>NERDCommenterToggle gv
+
+" copy to buffer
+vmap <leader>c :w! ~/.vimbuffer<CR>
+nmap <leader>c :.w! ~/.vimbuffer<CR>
+" paste from buffer
+map <leader>v :r ~/.vimbuffer<CR>
