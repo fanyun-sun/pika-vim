@@ -659,6 +659,11 @@ runtime custom/local.vim
 let g:NERDCreateDefaultMappings = 0
 nmap <C-c> <plug>NERDCommenterToggle
 vmap <C-c> <plug>NERDCommenterToggle gv
+""""""""""""""""""""""""""""""
+" NERDTree setting
+""""""""""""""""""""""""""""""
+nmap <leader>t :NERDTreeToggle<CR>
+" let NERDTreeWinSize = 23
 
 " copy to buffer
 vmap <leader>c :w! ~/.vimbuffer<CR>
