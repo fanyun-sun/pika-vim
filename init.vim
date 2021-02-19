@@ -139,7 +139,7 @@ Plug 'wavded/vim-stylus', { 'for': 'stylus' }
 
 Plug 'Houl/repmo-vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
 
 " if has('nvim')
 "   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
