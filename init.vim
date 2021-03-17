@@ -40,6 +40,7 @@
 set history=500
 " shell
 set shell=$SHELL
+"set shell=/bin/bash
 
 " compatibility for vim and neovim
 if !has('nvim')
@@ -69,7 +70,7 @@ if has('termguicolors')
 endif
 
 " Neovim settings
-let g:python3_host_prog = '/usr/bin/python3'
+" let g:python3_host_prog = '/usr/bin/python3'
 
 " Enable filetype plugin (called by vim-plug)
 "filetype plugin indent on
@@ -132,6 +133,7 @@ Plug 'szw/vim-tags'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
+Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-scripts/OmniCppComplete', { 'for': 'cpp' }
@@ -141,13 +143,30 @@ Plug 'Houl/repmo-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"else
-"  Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-" endif
+" syntax checker
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+ Plug 'Shougo/deoplete.nvim'
+ Plug 'roxma/nvim-yarp'
+ Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+" Python autocompletion
+Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'davidhalter/jedi-vim'
+
+Plug 'patstockwell/vim-monokai-tasty'
+
+
+" Linters
+Plug 'neomake/neomake'
+
+Plug 'dense-analysis/ale'
+
+
 
 "include custom plugin
 runtime custom/plugin.vim
@@ -291,9 +310,52 @@ let g:go_highlight_build_constraints = 1
 " }}}
 
 " --- deoplete.nvim --- {{{
+" Use deoplete.
+" " needed so deoplete can auto select the first suggestion
+set completeopt+=noinsert
+" comment this line to enable autocompletion preview window
+" (displays documentation related to the selected completion option)
+" disabled by default because preview makes the window flicker
+set completeopt-=preview
+"
+" autocompletion of files and commands behaves like shell
+" (complete only the common part, list the options that match)
+set wildmode=list:longest
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources = {}
-let g:deoplete#sources._ = []
+call deoplete#custom#option({
+\   'ignore_case': v:true,
+\   'smart_case': v:true,
+\})
+" complete with words from any opened file
+let g:context_filetype#same_filetypes = {}
+let g:context_filetype#same_filetypes._ = '_'
+
+" Jedi-vim ------------------------------
+
+set t_Co=256
+
+" Disable autocompletion (using deoplete instead)
+let g:jedi#completions_enabled = 0
+"let g:neosnippet#enable_completed_snippet = 1
+"let g:deoplete#sources#jedi#show_docstring = 1
+
+
+
+" All these mappings work only for python code:
+" Go to definition
+let g:jedi#goto_command = ',d'
+" Find ocurrences
+let g:jedi#usages_command = ',o'
+" Find assignments
+let g:jedi#goto_assignments_command = ',a'
+" Go to definition in new tab
+nmap ,D :tab split<CR>:call jedi#goto()<CR>
+"let g:deoplete#sources = {}
+"let g:deoplete#sources._ = []
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -631,11 +693,14 @@ runtime custom/local.vim
 " }}}
 " vim:fdm=marker:foldlevel=0
 
-
 """"""""""""""
 " Added my own config after this
 """"""""""""""
+" map leader+qq force leave
+nmap <leader>qq :q!<CR>
 
+
+" Repmo  ---------------------------------------------
 " map a motion and its reverse motion:
 :noremap <expr> h repmo#SelfKey('h', 'l')|sunmap h
 :noremap <expr> l repmo#SelfKey('l', 'h')|sunmap l
@@ -653,20 +718,64 @@ runtime custom/local.vim
 :noremap <expr> F repmo#ZapKey('F')|sunmap F
 :noremap <expr> t repmo#ZapKey('t')|sunmap t
 :noremap <expr> T repmo#ZapKey('T')|sunmap T
+
 """"""""""""""""""""""""""""""
 " nerdcommenter
 """"""""""""""""""""""""""""""
 let g:NERDCreateDefaultMappings = 0
 nmap <C-c> <plug>NERDCommenterToggle
 vmap <C-c> <plug>NERDCommenterToggle gv
+
 """"""""""""""""""""""""""""""
 " NERDTree setting
 """"""""""""""""""""""""""""""
 nmap <leader>t :NERDTreeToggle<CR>
 " let NERDTreeWinSize = 23
 
+""""""""""""""""""""""""""""""
+" clipboard for vim in different tmux panels
+""""""""""""""""""""""""""""""
 " copy to buffer
 vmap <leader>c :w! ~/.vimbuffer<CR>
 nmap <leader>c :.w! ~/.vimbuffer<CR>
 " paste from buffer
 map <leader>v :r ~/.vimbuffer<CR>
+
+" Autoclose ------------------------------
+
+" Fix to let ESC work as espected with Autoclose plugin
+" (without this, when showing an autocompletion window, ESC won't leave insert
+"  mode)
+let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
+
+" Neomake ------------------------------
+
+" Run linter on write
+autocmd! BufWritePost * Neomake
+
+" Check code as python3 by default
+let g:neomake_python_python_maker = neomake#makers#ft#python#python()
+let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
+let g:neomake_python_python_maker.exe = 'python3 -m py_compile'
+let g:neomake_python_flake8_maker.exe = 'python3 -m flake8'
+
+" Disable error messages inside the buffer, next to the problematic line
+let g:neomake_virtualtext_current_error = 0
+"call neomake#configure#automake('nrwi', 500)
+let g:neomake_open_list = 2
+
+" Ability to add python breakpoints
+" (I use ipdb, but you can change it to whatever tool you use for debugging)
+au FileType python map <silent> <leader>b Oimport ipdb; ipdb.set_trace()<esc>
+
+
+let using_neovim = has('nvim')
+" use 256 colors when possible
+if has('gui_running') || using_neovim || (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256')
+    if !has('gui_running')
+        let &t_Co = 256
+    endif
+    colorscheme vim-monokai-tasty
+else
+    colorscheme delek
+endif
