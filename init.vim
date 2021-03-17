@@ -161,7 +161,7 @@ let g:netrw_altv = 1
 " }}}
 
 " --- fzf plugin --- {{{
-nnoremap <leader>ff <ESC>:FZF<CR>
+nnoremap <leader>f <ESC>:FZF<CR>
 nnoremap <leader>bf <ESC>:Buffers<CR>
 
 " Augmenting Ag command using fzf#vim#with_preview function
