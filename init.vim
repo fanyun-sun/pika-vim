@@ -779,3 +779,11 @@ if has('gui_running') || using_neovim || (&term =~? 'mlterm\|xterm\|xterm-256\|s
 else
     colorscheme delek
 endif
+
+" " ale syntax checker                                                                                                                                                                                                                                                           
+  let g:ale_sign_error = '>>'                                                                                                                                                                                                                                                    
+  let g:ale_sign_warning = '--'                                                                                                                                                                                                                                                  
+  " Use :ALEInfo to check enabled linters                                                                                                                                                                                                                                
+  let g:ale_linters = {                                                                                                                                                                                                                                                          
+  \   'python': ['pyflakes'],                                                                                                                                                                                                                                                    
+  \}             
